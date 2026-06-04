@@ -2,7 +2,7 @@ Como compilar
 
 No terminal, dentro da pasta do projeto:
 
-g++ principal.cpp scanner.cpp -o compiler
+g++ main.cpp scanner.cpp -o compiler
 
 O programa espera um arquivo como entrada:
 

@@ -318,6 +318,12 @@ while (true)
                     lexeme += input[pos];
                     pos++;
                 }
+                else if (pos < input.size() &&
+                        (isalpha(input[pos]) || input[pos] == '_'))
+                {
+                    lexicalError("identificador iniciado por numero");
+                    return new Token(ERROR_TOKEN);
+                }
                 else
                 {
                     state = 9; 
@@ -520,7 +526,7 @@ while (true)
                 lexicalError("string nao pode ter quebra de linha");
                 return new Token(ERROR_TOKEN);
             }
-            else if (isprint(input[pos]) && input[pos] != '\\')
+            else if (isprint(input[pos]) && input[pos] != '"')
             {
                 lexeme += input[pos];
                 pos++;
