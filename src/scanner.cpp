@@ -1,4 +1,7 @@
-#include "scanner.h"    
+#include "../include/scanner.h"    
+
+//Função para verificar 
+
 
 //Construtor que recebe uma string com o nome do arquivo 
 //de entrada e preenche input com seu conteúdo.

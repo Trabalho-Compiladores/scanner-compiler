@@ -1,0 +1,55 @@
+// Declaração de função com retorno int e parâmetros
+int soma(int a, int b) {
+    int resultado;
+    resultado = a + b;
+    return resultado;
+}
+
+// Função void sem parâmetros (usa void)
+void mostra(char msg[]) {
+    // corpo vazio (apenas uma declaração nula)
+    ;
+}
+
+// Função principal
+int main(void) {
+    int x;
+    int y[10];
+    char c;
+    int i;
+
+    x = 10;
+    y[0] = 5;
+
+    // Comando if-else
+    if (x > 0) {
+        x = x - 1;
+    } else {
+        x = 0;
+    }
+
+    // Comando while
+    while (x < 10) {
+        x = x + 1;
+    }
+
+    // Comando for
+    for (i = 0; i < 10; i = i + 1) {
+        y[i] = i * 2;
+    }
+
+    // Chamada de função
+    i = soma(x, y[0]);
+
+    // Expressões com todos os operadores
+    if (i == 20 && x != 5) {
+        x = -x;
+    }
+
+    if (y[3] <= 100 || !c) {
+        return 0;
+    }
+
+    // Comando return sem expressão (em função void, mas aqui é int - apenas para teste sintático)
+    return i;
+}

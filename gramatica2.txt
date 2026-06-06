@@ -1,0 +1,96 @@
+Gramática adaptada.
+
+Não-terminais:
+<Program>, <Function>, <VarDeclaration>, <Type>,
+<ParamTypes>, <Statement>, <StatementSuffix>,
+<Assign>, <Expression>, <UnaryExpression>,
+<PrimaryExpression>, <BinOp>, <RelOp>, <LogOp>
+
+Terminais:
+if, else, while, for, return,
+int, char, void,
+ID, integerconstant, charconstant, stringconstant,
++, -, *, /,
+==, !=, <=, <, >=, >,
+&&, ||,
+=, (, ), [, ], {, }, ,, ;, EOF
+
+
+1. <Program> → (<Function>)* EOF
+
+2. <Function> → <Type> ID(<ParamTypes>)
+                {( <Type> <VarDeclaration>(, <VarDeclaration>)* ; )*
+                 (<Statement>)*}
+
+              | void ID(<ParamTypes>)
+                {( <Type> <VarDeclaration>(, <VarDeclaration>)* ; )*
+                 (<Statement>)*}
+
+3. <VarDeclaration> → ID([integerconstant])?
+                    | ID
+
+4. <Type> → char
+          | int
+
+5. <ParamTypes> → void
+                | <Type> ID([])?
+                  (, <Type> ID([])? )*
+
+6. <Statement> → if (<Expression>) <Statement>
+                  (else <Statement>)?
+
+               | while (<Expression>) <Statement>
+
+               | for ((<Assign>)? ; (<Expression>)? ; (<Assign>)?)
+                 <Statement>
+
+               | return (<Expression>)? ;
+
+               | ID <StatementSuffix>
+
+               | {(<Statement>)*}
+
+               | ;
+
+7. <StatementSuffix> → ([<Expression>])? = <Expression> ;
+
+                     | ((<Expression>
+                        (, <Expression>)*)?) ;
+
+8. <Assign> → ID([<Expression>])?
+              = <Expression>
+
+9. <Expression> → <UnaryExpression>
+                  ((<BinOp> | <RelOp> | <LogOp>)
+                   <UnaryExpression>)*
+
+10. <UnaryExpression> → - <UnaryExpression>
+                      | ! <UnaryExpression>
+                      | <PrimaryExpression>
+
+11. <PrimaryExpression> → ID(((<Expression>
+                               (, <Expression>)*)?)
+                               | [<Expression>])?
+
+                          | (<Expression>)
+
+                          | integerconstant
+
+                          | charconstant
+
+                          | stringconstant
+
+12. <BinOp> → +
+            | -
+            | *
+            | /
+
+13. <RelOp> → ==
+            | !=
+            | <=
+            | <
+            | >=
+            | >
+
+14. <LogOp> → &&
+            | ||

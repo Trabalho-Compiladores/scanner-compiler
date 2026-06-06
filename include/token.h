@@ -1,3 +1,6 @@
+#ifndef TOKEN_H
+#define TOKEN_H
+
 #include <iostream>
 #include <ctype.h>//Funções de caracteres
 #include <string>
@@ -40,7 +43,17 @@ enum Names
 
     COMMA,// ','
     SEMICOLON, // ';'
-
+    /*
+    CHAR,
+    INT,
+    VOID,
+    IF,
+    ELSE,
+    WHILE,
+    FOR,
+    RETURN,
+    */
+    
     ERROR_TOKEN,
     END_OF_FILE
 };
@@ -51,7 +64,7 @@ class Token
         int name;
         int attribute;
         string lexeme;
-    
+            
         Token(int name)
         {
             this->name = name;
@@ -71,3 +84,5 @@ class Token
             attribute = attr;
         }
 };
+
+#endif

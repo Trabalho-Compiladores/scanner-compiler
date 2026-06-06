@@ -1,5 +1,9 @@
+#ifndef SCANNER_H
+#define SCANNER_H
+
 #include <fstream>
 #include <string>
+#include <cstring>
 #include "token.h"
 
 class Scanner 
@@ -11,7 +15,7 @@ class Scanner
     
     public:
     //Construtor
-        Scanner(string);
+        Scanner(string input);
 
         int getLine();
     
@@ -19,5 +23,7 @@ class Scanner
         Token* nextToken();        
     
         //Método para manipular erros
-        void lexicalError(string);
+        void lexicalError(string msg);
 };
+
+#endif
