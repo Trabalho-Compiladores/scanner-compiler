@@ -1,0 +1,18 @@
+void testarControle(void) {
+    int i;
+    i = 0;
+    
+    if (i == 0) {
+        i = 1;
+    } else {
+        i = 2;
+    }
+
+    while (i < 10) {
+        i = i + 1;
+    }
+
+    for (i = 0; i < 5; i = i + 1) {
+        ;
+    }
+}
