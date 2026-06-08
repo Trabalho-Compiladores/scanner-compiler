@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include "token.h"
+#include "symboltable.h"
 
 class Scanner 
 {
@@ -12,10 +13,11 @@ class Scanner
         string input;//Armazena o texto de entrada
         int pos;//Posição atual
         int line;
+        SymbolTable* st;
     
     public:
     //Construtor
-        Scanner(string input);
+        Scanner(string, SymbolTable*);
 
         int getLine();
     

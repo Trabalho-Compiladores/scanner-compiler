@@ -2,7 +2,7 @@ Como compilar
 
 No terminal, dentro da pasta do projeto:
 
-g++ main.cpp src/scanner.cpp src/parser.cpp -o compiler
+g++ main.cpp src/scanner.cpp src/parser.cpp src/stentry.cpp src/symboltable.cpp -o compiler
 
 O programa possui dois modos:
 Modo scanner (referente ao analisador lexico)

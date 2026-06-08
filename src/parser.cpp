@@ -4,7 +4,10 @@
 // Construtor
 Parser::Parser(string input)
 {
-    scanner = new Scanner(input);
+    currentST = globalST = new SymbolTable();
+	initSimbolTable();
+
+	scanner = new Scanner(input, globalST);
 }
 
 // Avança para o próximo token
@@ -49,8 +52,8 @@ void Parser::program()
 void Parser::function()
 {
     // (<Type> | void)
-    if (lToken->name == ID && lToken->lexeme == "void")
-        match(ID);          // consome "void"
+    if (lToken->name == VOID)
+        match(VOID);          // consome "void"
     else
         type();             // consome "char" ou "int"
 
@@ -61,7 +64,7 @@ void Parser::function()
     match(LBRACE);          // '{'
 
     // ( <Type> <VarDeclaration> ( , <VarDeclaration> )* ; )*
-    while (lToken->name == ID && (lToken->lexeme == "char" || lToken->lexeme == "int"))
+    while (lToken->name == CHAR || lToken->name == INT)
     {
         type();                     // tipo
         varDeclaration();           // primeira variável
@@ -83,13 +86,10 @@ void Parser::function()
 // <Type> → char | int
 void Parser::type()
 {
-    if (lToken->name == ID)
-    {
-        if (lToken->lexeme == "char" || lToken->lexeme == "int")
-            match(ID);
-        else
-            error("tipo esperado: char ou int");
-    }
+    if (lToken->name == CHAR)
+        match(CHAR);
+    else if(lToken->name == INT)
+        match(INT);
     else
         error("tipo esperado: char ou int");
 }
@@ -110,9 +110,9 @@ void Parser::varDeclaration()
 void Parser::paramTypes()
 {
     // caso tenha só o "void" 
-    if (lToken->name == ID && lToken->lexeme == "void")
+    if (lToken->name == VOID)
     {
-        match(ID);
+        match(VOID);
         return;
     }
     // pelo menos um parâmetro: <Type> ID []?
@@ -146,60 +146,56 @@ void Parser::paramTypes()
 //             | ;
 void Parser::statement()
 {
-    if (lToken->name == ID)
+    if (lToken->name == IF)
     {
-        string lex = lToken->lexeme;
-        if (lex == "if")
+        match(IF);
+        match(LPAR);
+        expression();
+        match(RPAR);
+        statement();
+        if (lToken->name == ELSE)
         {
-            match(ID);
-            match(LPAR);
+            match(ELSE);
+            statement();
+        }
+    }    
+    else if (lToken->name == WHILE)
+    {
+        match(WHILE);
+        match(LPAR);
+        expression();
+        match(RPAR);
+        statement();
+    }
+    else if (lToken->name == FOR)
+    {
+        match(FOR);
+        match(LPAR);
+        // <Assign>?
+        if (lToken->name != SEMICOLON)
+            assign();
+        match(SEMICOLON);
+        // <Expression>?
+        if (lToken->name != SEMICOLON)
             expression();
-            match(RPAR);
-            statement();
-            if (lToken->name == ID && lToken->lexeme == "else")
-            {
-                match(ID);
-                statement();
-            }
-        }
-        else if (lex == "while")
-        {
-            match(ID);
-            match(LPAR);
+        match(SEMICOLON);
+        // <Assign>?
+        if (lToken->name != RPAR)
+            assign();
+        match(RPAR);
+        statement();
+    }
+    else if (lToken->name == RETURN)
+    {
+        match(RETURN);
+        if (lToken->name != SEMICOLON)
             expression();
-            match(RPAR);
-            statement();
-        }
-        else if (lex == "for")
-        {
-            match(ID);
-            match(LPAR);
-            // <Assign>?
-            if (lToken->name != SEMICOLON)
-                assign();
-            match(SEMICOLON);
-            // <Expression>?
-            if (lToken->name != SEMICOLON)
-                expression();
-            match(SEMICOLON);
-            // <Assign>?
-            if (lToken->name != RPAR)
-                assign();
-            match(RPAR);
-            statement();
-        }
-        else if (lex == "return")
-        {
-            match(ID);
-            if (lToken->name != SEMICOLON)
-                expression();
-            match(SEMICOLON);
-        }
-        else
-        {
-            match(ID); //consome o id
-            statementSuffix();
-        }
+        match(SEMICOLON);
+    }
+    else if(lToken->name == ID)
+    {
+        match(ID); //consome o id
+        statementSuffix();
     }
     else if (lToken->name == LBRACE)
     {
@@ -355,3 +351,27 @@ void Parser::primaryExpression()
             error("expressão primaria invalida");
     }
 }
+
+void
+Parser::initSimbolTable()
+{
+	Token* t;
+        
+	t = new Token(CHAR, "char");
+	globalST->add(new STEntry(t, true));
+	t = new Token(INT, "int");
+    globalST->add(new STEntry(t, true));
+    t = new Token(VOID, "void");
+    globalST->add(new STEntry(t, true));
+    t = new Token(IF, "if");
+    globalST->add(new STEntry(t, true));
+    t = new Token(ELSE, "else");
+    globalST->add(new STEntry(t, true));
+    t = new Token(WHILE, "while");
+    globalST->add(new STEntry(t, true));
+    t = new Token(FOR, "for");
+    globalST->add(new STEntry(t, true));
+    t = new Token(RETURN, "return");
+    globalST->add(new STEntry(t, true));
+}
+

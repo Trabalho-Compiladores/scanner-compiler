@@ -5,13 +5,16 @@
 
 //Construtor que recebe uma string com o nome do arquivo 
 //de entrada e preenche input com seu conteúdo.
-Scanner::Scanner(string input)
+
+Scanner::Scanner(string input, SymbolTable* table)
 {
     /*this->input = input;
     cout << "Entrada: " << input << endl << "Tamanho: " 
          << input.length() << endl;*/
     pos = 0;
     line = 1;
+
+    st = table;
 
     ifstream inputFile(input, ios::in); //input = nome arquivo  && inputFile = leitura do arquivo
     string line;
@@ -46,6 +49,7 @@ Token* Scanner::nextToken()
     string lexeme = "";
     int state = 0;//estado inicial
     Token* tok;
+    STEntry* obj;
 
 while (true)
     {
@@ -312,8 +316,12 @@ while (true)
                 }
                 break;
             case 7:
-                tok = new Token(ID);
-                tok->lexeme = lexeme;
+                obj = st->get(lexeme);
+                if (!obj)
+                    tok = new Token(ID, lexeme);
+                else 
+                    tok = new Token(obj->token->name);
+                
                 return tok;
             case 8:
                 if (pos < input.size() && isdigit(input[pos]))

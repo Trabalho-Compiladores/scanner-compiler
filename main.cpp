@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     if (option == "-s")
     {
         // MODO SCANNER
-        Scanner* scanner = new Scanner(filename);
+        Scanner* scanner = new Scanner(filename, new SymbolTable());
         allocVetor();
         Token* t;
         do
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
 void allocVetor()
 {
-    vet = new string[29];
+    vet = new string[37];
     vet[0] = "UNDEF";
     vet[1] = "ID";
     vet[2] = "INTEGERCONSTANT";
@@ -87,8 +87,16 @@ void allocVetor()
     vet[24] = "RBRACKET";
     vet[25] = "COMMA";
     vet[26] = "SEMICOLON";
-    vet[27] = "ERROR_TOKEN";
-    vet[28] = "END_OF_FILE";
+    vet[27] = "CHAR";
+    vet[28] = "INT";
+    vet[29] = "VOID";
+    vet[30] = "IF";
+    vet[31] = "ELSE";
+    vet[32] = "WHILE";
+    vet[33] = "FOR";
+    vet[34] = "RETURN";
+    vet[35] = "ERROR_TOKEN";
+    vet[36] = "END_OF_FILE";
 }
 
 void freeVetor()

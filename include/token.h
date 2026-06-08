@@ -43,7 +43,7 @@ enum Names
 
     COMMA,// ','
     SEMICOLON, // ';'
-    /*
+    
     CHAR,
     INT,
     VOID,
@@ -52,7 +52,6 @@ enum Names
     WHILE,
     FOR,
     RETURN,
-    */
     
     ERROR_TOKEN,
     END_OF_FILE
